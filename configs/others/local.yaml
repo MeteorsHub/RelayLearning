@@ -1,0 +1,95 @@
+# this is a config file to mimic local learning at each site.
+common:
+  random_seed: 1314
+  num_workers: 4
+  dataset:
+    name: fundus
+    kwargs:
+      task: segmentation
+      num_classes: 3
+      root_path: /home/user/data/fundus
+      img_size: [ 64, 64 ]
+      use_roi: true
+      out_range: [ -1.0, 1.0 ]
+      num_replica: 10
+  strategy:
+    name: baseline
+    kwargs:
+      load_state_dict_from_previous_task: false
+      rgb_inputs: true
+  model:
+    name: U-Net
+    kwargs:
+      in_channels: 3
+      num_classes: 3
+      bilinear: false
+      backbone: resnet18
+  train:
+    num_mimgs: 3
+    batch_size: 128  # per device per node
+    precision: 32  # 16, 32 or 64
+    loss:
+      name: ExpLogLoss
+      kwargs:
+        soft_dice: true
+        dice_kwargs:
+          do_bg: false
+          batch_dice: true
+        wce_kwargs:
+          weight: [ 1, 2, 2 ]
+        gamma: 0.3
+    optimizer:
+      name: Adam
+      kwargs:
+        lr: 0.001
+      lr_scheduler: null
+    gradient_clip: 0.0
+    check_val_every_n_epoch: 10
+    log_every_n_steps: 10
+
+# All tasks that can be tested. Each of these tasks will replace 'dataset' field in 'common' field in a task.
+all_tasks_datasets:
+  - kwargs:
+      task_id: 1
+      task_name: Domain1
+      img_folder: Domain1
+  - kwargs:
+      task_id: 2
+      task_name: Domain2
+      img_folder: Domain2
+  - kwargs:
+      task_id: 3
+      task_name: Domain3
+      img_folder: Domain3
+  - kwargs:
+      task_id: 4
+      task_name: Domain4
+      img_folder: Domain4
+# All tasks for training. Each of these task confs will replace 'common' field in a task.
+current_tasks:
+  task_ids: [ 1, 2, 3, 4 ]
+  task_confs:
+    1:
+      model:
+        kwargs:
+          pretrain: true
+      checkpoint:
+        load: null  # when begin another task
+        resume: null  # when resume in the same task
+        save:
+          dir: task_1  # where to save the model, which can be relayed to the next site
+    2:
+      checkpoint:
+        load: task_1/last.ckpt
+        save:
+          dir: task_2
+    3:
+      checkpoint:
+        load: task_2/last.ckpt
+        save:
+          dir: task_3
+    4:
+      checkpoint:
+        load: task_3/last.ckpt
+        save:
+          dir: task_4
