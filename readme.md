@@ -1,6 +1,6 @@
 # Relay Learning: a Topologically Secure Framework for Clinical Multi-site Deep Learning
 
-This is the official code repository for the Relay Learning project.
+This is the official code repository for the Relay Learning project: [https://doi.org/10.1038/s41746-023-00934-4](https://doi.org/10.1038/s41746-023-00934-4).
 
 Relay Learning is an offline deep learning paradigm providing topological data security
 in multi-site medical artificial intelligence (AI).
@@ -114,3 +114,17 @@ The config file and argument of the command line run file supports some cool fea
   interface and base class.
 * flexible configs: you can easily define most of your situations in multi-site deep learning by modifying a single
   config file.
+
+## Cite
+```
+@article{bo2023relay,
+  title={Relay learning: a physically secure framework for clinical multi-site deep learning},
+  author={Bo, Zi-Hao and Guo, Yuchen and Lyu, Jinhao and Liang, Hengrui and He, Jianxing and Deng, Shijie and Xu, Feng and Lou, Xin and Dai, Qionghai},
+  journal={npj Digital Medicine},
+  volume={6},
+  number={1},
+  pages={204},
+  year={2023},
+  publisher={Nature Publishing Group UK London}
+}
+```
