@@ -84,7 +84,7 @@ class DoubleGAN(DeepLearningRelayModel):
         assert replay_data_ratio in ['half', 'even']
         self.replay_c_select_mode = replay_c_select_mode
         self.task_merge_replay = task_merge_replay
-        self.replay_post_aug_pipe = get_data_aug_pipe(rgb=self.base_strategy.rgb_inputs) if replay_post_aug else None
+        self.replay_post_aug_pipe = get_data_aug_pipe(rgb=True) if replay_post_aug else None
 
         self.G_reg_interval, self.D_reg_interval = G_reg_interval, D_reg_interval
         self.pl_weight, self.r1_gamma = pl_weight, r1_gamma
